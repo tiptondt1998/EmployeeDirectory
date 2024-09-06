@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Directory</title>
+    <script defer src="script.js"></script>
 </head>
 <body>
     <h1>Employee Directory</h1>
     
+    <!-- Form to add an employee -->
     <form id="addEmployeeForm" method="post" action="/add-employee">
         <label for="employeeID">Employee ID:</label>
         <input type="text" id="employeeID" name="employeeID" required>
@@ -22,12 +24,32 @@
         <input type="text" id="position" name="position" required>
         
         <button type="submit">Add Employee</button>
-      </form>
-      
+    </form>
 
     <h2>Employee List</h2>
     <ul id="employeeList"></ul>
 
-    <script src="script.js"></script>
+    <script>
+        async function fetchEmployees() {
+            try {
+                const response = await fetch('/employees');
+                const employees = await response.json();
+                
+                const employeeList = document.getElementById('employeeList');
+                employeeList.innerHTML = ''; // Clear existing list
+                
+                employees.forEach(employee => {
+                    const li = document.createElement('li');
+                    li.textContent = `ID: ${employee.employeeID}, Name: ${employee.firstName} ${employee.lastName}, Position: ${employee.position}`;
+                    employeeList.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Error fetching employees:', error);
+            }
+        }
+        
+        // Fetch employees when the page loads
+        window.onload = fetchEmployees;
+    </script>
 </body>
 </html>
