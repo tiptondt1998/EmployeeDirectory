@@ -1,0 +1,22 @@
+{
+  "name": "employeedirectory",
+  "version": "1.0.0",
+  "description": "Your project description",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo 'Build script placeholder' && exit 0",
+    "deploy": "gh-pages -d public"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3"
+  },
+  "author": "",
+  "license": "ISC"
+}
+
