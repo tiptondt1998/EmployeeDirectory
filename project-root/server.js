@@ -1,45 +1,35 @@
-// server.js
 const express = require('express');
-const db = require('./database'); // Import the database
+const bodyParser = require('body-parser');
+const sqlite3 = require('sqlite3').verbose();
+
 const app = express();
-const PORT = 3000;
+const port = 3000;
 
-// Middleware for parsing JSON and form data
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Set up middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
-// Serve static HTML/JS files
-app.use(express.static(__dirname + '/public'));
+// Open database connection
+const db = new sqlite3.Database('Employees.db');
 
-// Route to add an employee to the database
-app.post('/addEmployee', (req, res) => {
-    const { firstName, lastName, position } = req.body;
-    const sql = 'INSERT INTO Employees (firstName, lastName, position) VALUES (?, ?, ?)';
+// Handle form submission
+app.post('/add-employee', (req, res) => {
+  const { employeeID, firstName, lastName, position } = req.body;
 
-    db.run(sql, [firstName, lastName, position], function(err) {
-        if (err) {
-            console.error(err.message);
-            res.status(500).send('Error adding employee');
-        } else {
-            res.status(200).send(`Employee added with ID: ${this.lastID}`);
-        }
-    });
+  if (!employeeID || !firstName || !lastName || !position) {
+    return res.status(400).send('All fields are required');
+  }
+
+  const query = 'INSERT INTO employees (employeeID, firstName, lastName, position) VALUES (?, ?, ?, ?)';
+  db.run(query, [employeeID, firstName, lastName, position], (err) => {
+    if (err) {
+      return res.status(500).send('Database error: ' + err.message);
+    }
+    res.send('Employee added successfully');
+  });
 });
 
-// Route to fetch all employees
-app.get('/employees', (req, res) => {
-    const sql = 'SELECT * FROM Employees';
-    db.all(sql, [], (err, rows) => {
-        if (err) {
-            console.error(err.message);
-            res.status(500).send('Error retrieving employees');
-        } else {
-            res.status(200).json(rows);
-        }
-    });
-});
-
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+// Start server
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
 });
