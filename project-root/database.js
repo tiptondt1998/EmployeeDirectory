@@ -8,7 +8,7 @@ const db = new sqlite3.Database('./Employees.db', (err) => {
     } else {
         console.log('Connected to the SQLite database.');
         db.run(`CREATE TABLE IF NOT EXISTS Employees (
-            employeeID INTEGER PRIMARY KEY AUTOINCREMENT,
+            employeeID TEXT PRIMARY KEY AUTOINCREMENT,
             firstName TEXT,
             lastName TEXT,
             position TEXT

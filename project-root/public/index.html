@@ -1,55 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Specifies the document type and defines it as HTML5 -->
     <meta charset="UTF-8">
+    <!-- Sets the character encoding to UTF-8, ensuring compatibility with different languages -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Sets the viewport to control layout on mobile devices, ensuring responsive design -->
     <title>Employee Directory</title>
-    <script defer src="script.js"></script>
+    <!-- The title of the web page displayed in the browser tab -->
 </head>
 <body>
+    <!-- Main content of the page begins here -->
+
     <h1>Employee Directory</h1>
-    
-    <!-- Form to add an employee -->
-    <form id="addEmployeeForm" method="post" action="/add-employee">
-        <label for="employeeID">Employee ID:</label>
-        <input type="text" id="employeeID" name="employeeID" required>
-        
+    <!-- Header displaying the title of the application -->
+
+    <h2>Add Employee</h2>
+    <!-- Subheader for the "Add Employee" section -->
+
+    <!-- Form for adding a new employee, sends data to /add-employee on form submission -->
+    <form action="/add-employee" method="POST">
+        <!-- Label for the "First Name" field -->
         <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" name="firstName" required>
-        
+        <!-- Input field for entering the employee's first name -->
+        <input type="text" id="firstName" name="firstName" required><br>
+
+        <!-- Label for the "Last Name" field -->
         <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" name="lastName" required>
-        
+        <!-- Input field for entering the employee's last name -->
+        <input type="text" id="lastName" name="lastName" required><br>
+
+        <!-- Label for the "Position" field -->
         <label for="position">Position:</label>
-        <input type="text" id="position" name="position" required>
-        
-        <button type="submit">Add Employee</button>
+        <!-- Input field for entering the employee's position -->
+        <input type="text" id="position" name="position" required><br>
+
+        <!-- Submit button to add the employee -->
+        <input type="submit" value="Add Employee">
     </form>
 
-    <h2>Employee List</h2>
-    <ul id="employeeList"></ul>
+    <!-- Form for removing an employee by their employee ID, sends data to /remove-employee -->
+    <h2>Remove Employee</h2>
+    <!-- Subheader for the "Remove Employee" section -->
+    <form action="/remove-employee" method="POST">
+        <!-- Label for the "Employee ID" field for removing an employee -->
+        <label for="removeID">Employee ID:</label>
+        <!-- Input field to specify the employee's ID to be removed -->
+        <input type="text" id="removeID" name="employeeID" required><br>
 
-    <script>
-        async function fetchEmployees() {
-            try {
-                const response = await fetch('/employees');
-                const employees = await response.json();
-                
-                const employeeList = document.getElementById('employeeList');
-                employeeList.innerHTML = ''; // Clear existing list
-                
-                employees.forEach(employee => {
-                    const li = document.createElement('li');
-                    li.textContent = `ID: ${employee.employeeID}, Name: ${employee.firstName} ${employee.lastName}, Position: ${employee.position}`;
-                    employeeList.appendChild(li);
-                });
-            } catch (error) {
-                console.error('Error fetching employees:', error);
-            }
-        }
-        
-        // Fetch employees when the page loads
-        window.onload = fetchEmployees;
-    </script>
+        <!-- Submit button to remove the employee -->
+        <input type="submit" value="Remove Employee">
+    </form>
+
+    <!-- Section to display the list of employees -->
+    <h2>Employee List</h2>
+    <!-- The employee list will be dynamically inserted here by JavaScript -->
+    <div id="employee-list">
+        <!-- Placeholder for dynamically generated employee data -->
+    </div>
+
+    <!-- Link to the external JavaScript file that will handle functionality for the page -->
+    <script src="script.js"></script>
 </body>
 </html>
